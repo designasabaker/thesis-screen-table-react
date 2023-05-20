@@ -62,8 +62,11 @@ const Pot = (props:PotProps) =>{
             if (divElement) {
                 const computedStyle = getComputedStyle(divElement);
                 const backgroundColor = computedStyle.backgroundColor;
-                const [r, g, b] = backgroundColor.match(/\d+/g);
-                setDisplayColor({ r: Number(r), g: Number(g), b: Number(b) });
+                const rgbValues = backgroundColor.match(/\d+/g);
+                if (rgbValues) {
+                    const [r, g, b] = rgbValues.map(Number);
+                    setDisplayColor({ r, g, b });
+                }
             }
         }, 100); // 每100毫秒更新一次颜色值
 
