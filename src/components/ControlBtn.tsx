@@ -40,7 +40,6 @@ const ControlBtn = (props: ControlBtnProps) => {
             }}
             type="button"
             onClick={()=>ingredient.startTranslate(controlBtnType)}
-
         >
             {btnText}
         </button>

@@ -10,10 +10,12 @@ export const Game: FC = () => {
         <>
             {/* ingredient(s) graphics*/}
             <div className={style.canvas}>
-               {ingredients.map((ingredient) => (<IngredientGraphics ingredient={ingredient} />))}
+               {ingredients.map((ingredient, index) => (<IngredientGraphics key={index} ingredient={ingredient} />))}
             </div>
             {/*  game pot(s) */}
-            <Pot posX={200} posY={200} width={500} height={500} srcImg={''} monitoredIngredients={ingredients} />
+            <Pot id={1} posX={100} posY={200} width={300} height={300} srcImg={''} monitoredIngredients={ingredients} />
+            <Pot id={2} posX={500} posY={200} width={300} height={300} srcImg={''} monitoredIngredients={ingredients} />
+            <Pot id={3} posX={900} posY={200} width={300} height={300} srcImg={''} monitoredIngredients={ingredients} />
         </>
     )
 }

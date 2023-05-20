@@ -1,5 +1,8 @@
 import {makeAutoObservable} from "mobx";
 import ControlBtnTypeEnum from "../enums/ControlBtnTypeEnum";
+import {Icolor} from "../Interfaces";
+import {defaultColor} from "../Interfaces";
+
 
 export class Ingredient {
     id = "1";
@@ -8,16 +11,15 @@ export class Ingredient {
     width = 100;
     height = 100;
     srcImg = "";
-    redValueChange = 0;
+    color=defaultColor;
     // private
     TIME_INTERVAL = 15;
-    STEP = 5
+    STEP = 1;
     intervalId = 0;
     MOVING_TIME_LIMIT = 1000;
 
 
-
-    constructor(id: string, x: number, y: number, width: number, height: number, srcImg: string, redValueChange: number, step?: number) {
+    constructor(id: string, x: number, y: number, width: number, height: number, srcImg: string, color:Icolor, step?: number) {
         makeAutoObservable(this);
         this.id = id;
         this.x = x;
@@ -25,7 +27,7 @@ export class Ingredient {
         this.width = width;
         this.height = height;
         this.srcImg = srcImg;
-        this.redValueChange = redValueChange;
+        this.color = color;
         if (step) {
             this.STEP = step;
         }

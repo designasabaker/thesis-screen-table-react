@@ -1,8 +1,11 @@
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import Ingredient   from "../stores/Ingredient";
 import {observer} from "mobx-react";
+import style from '../global.module.scss';
+import {Icolor} from "../Interfaces";
 
 interface PotProps {
+    id: number;
     posX: number;
     posY: number;
     width: number;
@@ -12,15 +15,18 @@ interface PotProps {
 }
 
 const Pot = (props:PotProps) =>{
+    const divRef = useRef(null);
+
     const initialColor = {
         r: 0,
-        g: 10,
-        b: 10,
+        g: 0,
+        b: 0,
     };
     const [color,setColor] = useState(initialColor);
+    const [displayColor,setDisplayColor] = useState(initialColor);
 
     const {
-        posX, posY, width, height, monitoredIngredients,
+        id, posX, posY, width, height, monitoredIngredients,
     } = props;
 
     // helper function: check if ONE ingredient is inside the pot
@@ -33,33 +39,59 @@ const Pot = (props:PotProps) =>{
 
     // check how many ingredients are inside the pot
     const insideIngredientsNum:number = monitoredIngredients.filter(checkIngredient).length;
+    // console.log(`Pot ${id} has ${insideIngredientsNum} ingredients inside.`);
 
-    const insideIngredientsRedValSum: number = useMemo(()=>monitoredIngredients.reduce((redVal, ingredient) => {
-        return redVal + (checkIngredient(ingredient) ? ingredient.redValueChange : 0);
-    }, 0),[insideIngredientsNum]);
+    const insideIngredientsColorSum: Icolor = useMemo(() => monitoredIngredients.reduce((colorVal, ingredient) => {
+        return !checkIngredient(ingredient) ? colorVal : {r: colorVal.r + ingredient.color.r, g: colorVal.g + ingredient.color.g, b: colorVal.b + ingredient.color.b}
+    }, {r:0,g:0,b:0}),[insideIngredientsNum]);
 
     useEffect(()=>{
         setColor({
                 ...color,
-                r: insideIngredientsRedValSum / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
+                r: insideIngredientsColorSum.r / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
+                g: insideIngredientsColorSum.g / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
+                b: insideIngredientsColorSum.b / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
             }
         )
-    }, [insideIngredientsRedValSum]);
+    }, [insideIngredientsNum]);
+
+    useEffect(() => {
+        const divElement = divRef.current;
+
+        const intervalId = setInterval(() => {
+            if (divElement) {
+                const computedStyle = getComputedStyle(divElement);
+                const backgroundColor = computedStyle.backgroundColor;
+                const [r, g, b] = backgroundColor.match(/\d+/g);
+                setDisplayColor({ r: Number(r), g: Number(g), b: Number(b) });
+            }
+        }, 100); // 每100毫秒更新一次颜色值
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
         <div
+            ref={divRef}
+            className={style.potContainer}
             style={{
-                position: 'fixed',
-                zIndex: -10,
                 left: posX,
                 top: posY,
                 width: width,
                 height: height,
-                background: `rgb(${color.r},${color.g},${color.b})`,
             }}
         >
-            POT
-
+            <p>POT{id} {!!displayColor && `R${displayColor.r} G${displayColor.g} B${displayColor.b}`}</p>
+            <div
+                className={style.pot}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: `rgb(${color.r},${color.g},${color.b})`,
+                }} />
+            <img src={props.srcImg} alt={`Pot-${id}`} />
         </div>)
 }
 export default  observer(Pot);
