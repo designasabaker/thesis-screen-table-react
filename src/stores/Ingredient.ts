@@ -14,7 +14,8 @@ export class Ingredient {
     STEP = 5
     intervalId = 0;
     MOVING_TIME_LIMIT = 1000;
-    BORDER_GAP = 10;
+
+
 
     constructor(id: string, x: number, y: number, width: number, height: number, srcImg: string, redValueChange: number, step?: number) {
         makeAutoObservable(this);
