@@ -1,6 +1,7 @@
 import Game from './components/Game';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SharedLayout from "./Pages/SharedLayout";
+import Home from "./Pages/Home";
 
 function App() {
   return(
@@ -14,8 +15,8 @@ function App() {
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<SharedLayout />} >
+                 <Route index element={<Home />} />
                  <Route path="/game" element={<Game />} />
-
               </Route>
           </Routes>
       </BrowserRouter>

@@ -1,11 +1,14 @@
-import {FC, Suspense, useEffect} from 'react';
+import {FC, Suspense, useEffect, useState} from 'react';
 import {observer} from "mobx-react";
 import IngredientGraphics from "./IngredientGraphics";
 import Pot from "./Pot";
 import style from '../global.module.scss';
 import {Ingredient} from "../stores";
+// Import the functions you need from the SDKs you need
+import getIngredients from '../firebase';
+import {Iingredient} from "../Interfaces";
 
-import IngredientsJSONList from "../Data/Ingredients"; // import from local file
+// import IngredientsJSONList from "../Data/Ingredients";
 
 const INGREDIENT_WIDTH = 50;
 const INGREDIENT_HEIGHT = 50;
@@ -13,20 +16,29 @@ const INGREDIENT_HEIGHT = 50;
 // const screenWidth = window.innerWidth;
 const unitWidth = INGREDIENT_WIDTH * 3; // image size + 2 * button size, button has same size with image
 
-let ingredients: Ingredient[] = [];
-function init(){
-    ingredients = IngredientsJSONList.sort((a,b) => (parseInt(a.id) - parseInt(b.id))).map((ingredient, index) => {
-        return new Ingredient(ingredient.id, index * unitWidth + INGREDIENT_WIDTH + 20, 100, INGREDIENT_WIDTH, INGREDIENT_HEIGHT, ingredient.srcImg, ingredient.color, ingredient.step);
-    });
-}
+
 export const Game: FC = () => {
-    useEffect(init, [])
+    const init = async () => {
+        const IngredientsJSONList: Iingredient[] = await getIngredients();
+        // console.log(IngredientsJSONList, 'IngredientsJSONList')
+        const ingredients = IngredientsJSONList.sort((a,b) => (parseInt(a.id) - parseInt(b.id))).map((ingredientJSON, index) => {
+            return new Ingredient(ingredientJSON.name, ingredientJSON.id, index * unitWidth + INGREDIENT_WIDTH + 20, 100, INGREDIENT_WIDTH, INGREDIENT_HEIGHT, ingredientJSON.srcImg, ingredientJSON.color, ingredientJSON.step);
+        });
+        setIngredients(ingredients);
+        return true;
+    }
+
+    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+    useEffect(()=>{
+        init();
+    }, [])
 
     return(
         <Suspense fallback={<p>Loading...</p>}>
             {/* ingredient(s) graphics*/}
             <div className={style.canvas}>
-               {ingredients.map((ingredient, index) => (<IngredientGraphics key={index} ingredient={ingredient} />))}
+               {ingredients.map((ingredientObj, index) => (<IngredientGraphics key={index} ingredientObj={ingredientObj} />))}
             </div>
             {/*  game pot(s) */}
             <Pot id={1} posX={100} posY={200} width={300} height={300} srcImg={''} monitoredIngredients={ingredients} />

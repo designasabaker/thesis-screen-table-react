@@ -3,8 +3,8 @@ import ControlBtn from "./ControlBtn";
 import ControlBtnTypeEnum from "../enums/ControlBtnTypeEnum";
 import {motion} from "framer-motion";
 
-const IngredientGraphics = (props:{ingredient:any}) => {
-    const { ingredient } = props;
+const IngredientGraphics = (props:any) => {
+    const { ingredientObj } = props;
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -14,22 +14,22 @@ const IngredientGraphics = (props:{ingredient:any}) => {
                 duration: 0.7,
                 delay: 0.15,
             }}>
-            <img key={ingredient.id}
+            <img key={ingredientObj.id}
                  style={{
                      position: 'absolute',
-                     left: ingredient.x,
-                     top: ingredient.y,
-                     width: ingredient.width,
-                     height: ingredient.height,
+                     left: ingredientObj.x,
+                     top: ingredientObj.y,
+                     width: ingredientObj.width,
+                     height: ingredientObj.height,
                      zIndex:100,
                  }}
-                 src={ingredient.srcImg}
-                 alt={`Ingredient-${ingredient.id}`}
+                 src={ingredientObj.srcImg}
+                 alt={`Ingredient-${ingredientObj.name}`}
             />
-            <ControlBtn controlBtnType={ControlBtnTypeEnum.UP} ingredient={ingredient} />
-            <ControlBtn controlBtnType={ControlBtnTypeEnum.LEFT} ingredient={ingredient} />
-            <ControlBtn controlBtnType={ControlBtnTypeEnum.RIGHT} ingredient={ingredient} />
-            <ControlBtn controlBtnType={ControlBtnTypeEnum.DOWN} ingredient={ingredient} />
+            <ControlBtn controlBtnType={ControlBtnTypeEnum.UP} ingredient={ingredientObj} />
+            <ControlBtn controlBtnType={ControlBtnTypeEnum.LEFT} ingredient={ingredientObj} />
+            <ControlBtn controlBtnType={ControlBtnTypeEnum.RIGHT} ingredient={ingredientObj} />
+            <ControlBtn controlBtnType={ControlBtnTypeEnum.DOWN} ingredient={ingredientObj} />
         </motion.div>
         )}
 

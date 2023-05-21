@@ -3,8 +3,8 @@ import ControlBtnTypeEnum from "../enums/ControlBtnTypeEnum";
 import {Icolor} from "../Interfaces";
 import {defaultColor} from "../Interfaces";
 
-
 export class Ingredient {
+    name = 'Ingredient';
     id = "1";
     x = 100;
     y = 100;
@@ -15,12 +15,13 @@ export class Ingredient {
     // private
     TIME_INTERVAL = 15;
     STEP = 1;
-    intervalId = 0;
+    intervalId: NodeJS.Timer | null = null;
     MOVING_TIME_LIMIT = 1000;
 
 
-    constructor(id: string, x: number, y: number, width: number, height: number, srcImg: string, color:Icolor, step?: number) {
+    constructor(name:string, id: string, x: number, y: number, width: number, height: number, srcImg: string, color:Icolor, step?: number) {
         makeAutoObservable(this);
+        this.name = name;
         this.id = id;
         this.x = x;
         this.y = y;
@@ -54,7 +55,7 @@ export class Ingredient {
 
     //helper function
     quitTranslate() {
-        clearInterval(this.intervalId);
+        if (this.intervalId)  clearInterval(this.intervalId);
     }
 
     startTranslate(btnType: ControlBtnTypeEnum) {
