@@ -4,6 +4,18 @@ export interface Icolor{
     b:number | 0,
 }
 
+export interface Iingredient{
+    name: string,
+    id: string,
+    // x: number,
+    // y: number,
+    // width: number,
+    // height: number,
+    srcImg: string,
+    color: Icolor,
+    step: number,
+}
+
 export const defaultColor:Icolor = {
     r:0,
     g:0,

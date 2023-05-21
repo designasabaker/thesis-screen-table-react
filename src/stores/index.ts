@@ -1,10 +1,13 @@
 import Ingredient from "./Ingredient";
-import milkImg from "../assets/milk.png";
-import spiceImg from "../assets/spice.png";
-import {defaultColor} from "../Interfaces";
+//
+// const INGREDIENT_WIDTH = 50;
+// const INGREDIENT_HEIGHT = 50;
+// // const numOfIngredients = IngredientsJSONList.length;
+// // const screenWidth = window.innerWidth;
+// const unitWidth = INGREDIENT_WIDTH * 3; // image size + 2 * button size, button has same size with image
+//
+// export const ingredients = IngredientsJSONList.map((ingredient, index) => {
+//     return new Ingredient(ingredient.id, index * unitWidth + INGREDIENT_WIDTH, 100, INGREDIENT_WIDTH, INGREDIENT_HEIGHT, ingredient.srcImg, ingredient.color, ingredient.step);
+// });
 
-export const spice = new Ingredient("i1", 52, 55, 50, 50, spiceImg, {...defaultColor, r:40},3);
-export const milk = new Ingredient("i2", 150, 55, 50, 50, milkImg, {...defaultColor},2);
-
-export const ingredients = [spice, milk];
-
+export {Ingredient}

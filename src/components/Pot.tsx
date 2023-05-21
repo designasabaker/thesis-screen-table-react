@@ -3,6 +3,7 @@ import Ingredient   from "../stores/Ingredient";
 import {observer} from "mobx-react";
 import style from '../global.module.scss';
 import {Icolor} from "../Interfaces";
+import { motion } from 'framer-motion';
 
 interface PotProps {
     id: number;
@@ -17,11 +18,13 @@ interface PotProps {
 const Pot = (props:PotProps) =>{
     const divRef = useRef(null);
 
+    // initial water color
     const initialColor = {
         r: 0,
         g: 0,
         b: 0,
     };
+
     const [color,setColor] = useState(initialColor);
     const [displayColor,setDisplayColor] = useState(initialColor);
 
@@ -43,14 +46,15 @@ const Pot = (props:PotProps) =>{
 
     const insideIngredientsColorSum: Icolor = useMemo(() => monitoredIngredients.reduce((colorVal, ingredient) => {
         return !checkIngredient(ingredient) ? colorVal : {r: colorVal.r + ingredient.color.r, g: colorVal.g + ingredient.color.g, b: colorVal.b + ingredient.color.b}
-    }, {r:0,g:0,b:0}),[insideIngredientsNum]);
+    }, initialColor),[insideIngredientsNum]);
 
     useEffect(()=>{
+        const averageIndex = (insideIngredientsNum === 0 ? 1 : insideIngredientsNum);
         setColor({
                 ...color,
-                r: insideIngredientsColorSum.r / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
-                g: insideIngredientsColorSum.g / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
-                b: insideIngredientsColorSum.b / (insideIngredientsNum === 0 ? 1 : insideIngredientsNum ),
+                r: insideIngredientsColorSum.r / averageIndex,
+                g: insideIngredientsColorSum.g / averageIndex,
+                b: insideIngredientsColorSum.b / averageIndex,
             }
         )
     }, [insideIngredientsNum]);
@@ -76,25 +80,36 @@ const Pot = (props:PotProps) =>{
     }, []);
 
     return (
-        <div
-            ref={divRef}
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+                ease: 'easeInOut',
+                duration: 0.7,
+                delay: 0.15,
+            }}
             className={style.potContainer}
             style={{
                 left: posX,
                 top: posY,
                 width: width,
                 height: height,
+                zIndex: -30,
             }}
         >
             <p>POT{id} {!!displayColor && `R${displayColor.r} G${displayColor.g} B${displayColor.b}`}</p>
             <div
+                ref={divRef}
                 className={style.pot}
                 style={{
                     width: '100%',
                     height: '100%',
                     backgroundColor: `rgb(${color.r},${color.g},${color.b})`,
-                }} />
-            <img src={props.srcImg} alt={`Pot-${id}`} />
-        </div>)
+                    // boxShadow: 'inset 0 0 120px 0 #c7c7c7',
+                }} >
+
+            </div>
+
+        </motion.div>)
 }
 export default  observer(Pot);

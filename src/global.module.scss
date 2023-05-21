@@ -9,12 +9,15 @@ body {
   color:$text-color;
   min-width: 300px;
   min-height: 600px;
+  height: 100vh;
+  box-sizing: border-box;
+  border: white 2px solid;
 
   header{
     position:fixed;
     bottom: 0;
     right: 0;
-    padding: 15px;
+    padding: 25px;
 
     h1 {
       font-family: $primary-font;
@@ -33,15 +36,26 @@ body {
 
   .potContainer{
     position: fixed;
-    z-index: -10;
-    transition: background 1s ease-in-out;
-    border: white 1px dashed;
-    padding:10px;
+    transition: 1s ease-in-out;
+    border-color: #7c7c7c;
+    border-radius: 18px;
+    padding: 20px;
+    background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+
+    linear-gradient(180deg, hsl(0,0%,78%)  0%,
+                    hsl(0,0%,90%) 47%,
+                    hsl(0,0%,78%) 53%,
+                    hsl(0,0%,70%)100%);
 
     .pot{
-      border: $background-color 2px dashed;
-
+      border-radius: 8px;
+      transition: 1s ease-in-out;
+      opacity: 90%;
+      box-shadow: white 0 0 12px 12px;
     }
+
     p{
       position: absolute;
       font-family: $primary-font;
