@@ -7,7 +7,7 @@ import {useCallback} from "react";
 const IngredientGraphics = (props:any) => {
     const { ingredientObj } = props;
 
-    const handleMouseDown = useCallback( (event) => {
+    const handleMouseDown = useCallback( (event:any) => {
         event.preventDefault();
         const { clientX, clientY } = event;
         if(clientX > ingredientObj.x && clientX < ingredientObj.x + ingredientObj.width && clientY > ingredientObj.y && clientY < ingredientObj.y + ingredientObj.height) {
@@ -19,7 +19,7 @@ const IngredientGraphics = (props:any) => {
             ingredientObj.setIsDragging(false);
         }},[]);
 
-    const handleMouseMove = useCallback((event) => {
+    const handleMouseMove = useCallback((event:any) => {
         event.preventDefault();
         if (ingredientObj.isDragging) {
             const { clientX, clientY } = event;
