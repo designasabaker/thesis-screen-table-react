@@ -17,6 +17,7 @@ export class Ingredient {
     STEP = 1;
     intervalId: NodeJS.Timer | null = null;
     MOVING_TIME_LIMIT = 1000;
+    isDragging = false;
 
 
     constructor(name:string, id: string, x: number, y: number, width: number, height: number, srcImg: string, color:Icolor, step?: number) {
@@ -32,6 +33,7 @@ export class Ingredient {
         if (step) {
             this.STEP = step;
         }
+        this.isDragging = false;
     }
 
     isNextPositionOutsideBorder = (x: number, y: number) => {
@@ -47,6 +49,13 @@ export class Ingredient {
             new_y + this.height * 2 >= windowHeight)
     };
 
+    setIsDragging = (isDragging: boolean) => {
+        this.isDragging = isDragging;
+    }
+    setPosition = (x: number, y: number) => {
+        this.x = x;
+        this.y = y;
+    }
     //helper function
     translate(x: number, y: number) {
         this.x += x;
