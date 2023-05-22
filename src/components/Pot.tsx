@@ -4,6 +4,9 @@ import {observer} from "mobx-react";
 import style from '../global.module.scss';
 import {Icolor} from "../Interfaces";
 import { motion } from 'framer-motion';
+import {setLightness} from "../Hue";
+import rgbToHsl, {RGBToBodybackground} from "../utils/RGBToHSL";
+import {useAppContext} from "../contexts/AppContext";
 
 interface PotProps {
     id: number;
@@ -17,6 +20,7 @@ interface PotProps {
 
 const Pot = (props:PotProps) =>{
     const divRef = useRef(null);
+    const {setBodyBackground} = useAppContext();
 
     // initial water color
     const initialColor = {
@@ -94,10 +98,26 @@ const Pot = (props:PotProps) =>{
                 top: posY,
                 width: width,
                 height: height,
-                zIndex: -30,
             }}
         >
-            <p>POT{id} {!!displayColor && `R${displayColor.r} G${displayColor.g} B${displayColor.b}`}</p>
+            <div className={style.controlPanel}>
+                <p>POT{id} {!!displayColor && `R${displayColor.r} G${displayColor.g} B${displayColor.b}`}</p>
+                {/* click button to change the whole background color and hue*/}
+                <button
+                    type="button"
+                    onClick={() => {
+                        setLightness(rgbToHsl(displayColor).l).then(() => {
+                            console.log('lightness set');
+                        })
+                        setBodyBackground(RGBToBodybackground(displayColor));
+                    }}
+                    style={
+                        {pointerEvents: 'auto',}
+                    }
+                >
+                    Set Lightness
+                </button>
+            </div>
             <div
                 ref={divRef}
                 className={style.pot}
@@ -107,9 +127,7 @@ const Pot = (props:PotProps) =>{
                     backgroundColor: `rgb(${color.r},${color.g},${color.b})`,
                     // boxShadow: 'inset 0 0 120px 0 #c7c7c7',
                 }} >
-
             </div>
-
         </motion.div>)
 }
 export default  observer(Pot);

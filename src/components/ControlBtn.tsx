@@ -37,6 +37,7 @@ const ControlBtn = (props: ControlBtnProps) => {
                 width: ingredient.width,
                 height: ingredient.height,
                 textAlign: 'center',
+                zIndex: 100,
             }}
             type="button"
             onClick={()=>ingredient.startTranslate(controlBtnType)}

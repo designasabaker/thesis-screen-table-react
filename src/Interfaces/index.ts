@@ -21,3 +21,15 @@ export const defaultColor:Icolor = {
     g:0,
     b:0,
 }
+
+export interface rgb{
+    r:number,
+    g:number,
+    b:number,
+}
+
+export interface hsl{
+    h:number,
+    s:number,
+    l:number,
+}
